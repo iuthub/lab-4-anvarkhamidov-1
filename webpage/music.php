@@ -17,8 +17,14 @@
 			<ul id="musiclist">
             <? foreach (glob('songs/*.mp3') as $file) { ?>
 				<li class="mp3item">
-					<a href="<?= $file ?>"><?= basename($file, '.mp3') ?></a>
+					<a href="<?= $file ?>"><?= basename($file) ?></a>
 					(<?= (filesize($file)) ?> b)
+				</li>
+            <? }; ?>
+
+            <? foreach (glob('songs/*.txt') as $file) { ?>
+				<li class="playlistitem">
+					<a href="?playlist=<?= $file ?>"><?= basename($file) ?></a>
 				</li>
             <? }; ?>
 			</ul>
