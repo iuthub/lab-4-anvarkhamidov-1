@@ -14,20 +14,34 @@
 		</div>
 
 		<div id="listarea">
-			<ul id="musiclist">
-            <? foreach (glob('songs/*.mp3') as $file) { ?>
-				<li class="mp3item">
-					<a href="<?= $file ?>"><?= basename($file) ?></a>
-					(<?= (filesize($file)) ?> b)
-				</li>
-            <? }; ?>
+            <? $playlist = $_REQUEST['playlist']; ?>
+            <? if (isset($playlist)) { ?>
 
-            <? foreach (glob('songs/*.txt') as $file) { ?>
-				<li class="playlistitem">
-					<a href="?playlist=<?= $file ?>"><?= basename($file) ?></a>
-				</li>
+                <ul id="musiclist">
+                <? foreach (file(join(['songs', $playlist], DIRECTORY_SEPARATOR)) as $filename) { ?>
+                    <li class="mp3item">
+                        <a href="<?= "songs".DIRECTORY_SEPARATOR.$filename ?>"><?= basename($filename) ?></a>
+                    </li>
+                <? }; ?>
+                </ul>
+
+            <? } else { ?>
+
+                <ul id="musiclist">
+                <? foreach (glob('songs/*.mp3') as $file) { ?>
+                    <li class="mp3item">
+                        <a href="<?= $file ?>"><?= basename($file) ?></a>
+                    </li>
+                <? }; ?>
+
+                <? foreach (glob('songs/*.txt') as $file) { ?>
+                    <li class="playlistitem">
+                        <a href="?playlist=<?= basename($file) ?>"><?= basename($file) ?></a>
+                    </li>
+                <? }; ?>
+                </ul>
+
             <? }; ?>
-			</ul>
 		</div>
 	</body>
 </html> 
