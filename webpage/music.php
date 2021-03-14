@@ -1,3 +1,18 @@
+<?php 
+function customFileSize($file) {
+    $text = "";
+    $size = filesize($file);
+    if (0 < $size && $size < 1024) {
+        $text = $size." b";
+    } else if (1023 < $size && $size < 1048575) {
+        $text = round($size/1024, 2)." kb";
+    } else if (1048575 < $size) {
+        $text = round($size/1048576, 2)." mb";
+    }
+    return $text;
+}; 
+?>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -20,7 +35,9 @@
                 <ul id="musiclist">
                 <? foreach (file(join(['songs', $playlist], DIRECTORY_SEPARATOR)) as $filename) { ?>
                     <li class="mp3item">
-                        <a href="<?= "songs".DIRECTORY_SEPARATOR.$filename ?>"><?= basename($filename) ?></a>
+                        <? $filename = trim("songs".DIRECTORY_SEPARATOR.$filename); ?>
+                        <a href="<?= $filename ?>"><?= basename($filename) ?></a>
+                        (<?= customFileSize($filename) ?>)
                     </li>
                 <? }; ?>
                 </ul>
@@ -31,6 +48,7 @@
                 <? foreach (glob('songs/*.mp3') as $file) { ?>
                     <li class="mp3item">
                         <a href="<?= $file ?>"><?= basename($file) ?></a>
+                        (<?= customFileSize($file) ?>)
                     </li>
                 <? }; ?>
 
